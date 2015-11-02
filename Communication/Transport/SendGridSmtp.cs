@@ -27,7 +27,7 @@ using Rock.Model;
 using Rock.Communication;
 using Rock.Communication.Transport;
 
-namespace com.bricksandmortar.Communication.Transport
+namespace com.bricksandmortar.SendGrid
 {
     /// <summary>
     /// Sends a communication through SMTP protocol
