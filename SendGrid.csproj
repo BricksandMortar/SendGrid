@@ -31,12 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bricksandmortar.studio.com_Rockit\RockWeb\Bin\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\Rock\Rock\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Rock">
-      <HintPath>..\bricksandmortar.studio.com_Rockit\RockWeb\Bin\Rock.dll</HintPath>
+    <Reference Include="Rock, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Rock\Rock\bin\Rock.dll</HintPath>
     </Reference>
     <Reference Include="Sendgrid.Webhooks">
       <HintPath>..\sendgrid-webhooks\Sendgrid.Webhooks\obj\Debug\Sendgrid.Webhooks.dll</HintPath>

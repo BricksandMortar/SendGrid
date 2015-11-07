@@ -26,6 +26,7 @@ using Rock.Attribute;
 using Rock.Model;
 using Rock.Communication;
 using Rock.Communication.Transport;
+using System.Collections.Generic;
 
 namespace com.bricksandmortar.SendGrid
 {
@@ -37,7 +38,7 @@ namespace com.bricksandmortar.SendGrid
     [ExportMetadata( "ComponentName", "Send Grid SMTP" )]
     [TextField( "Server", "", true, "smtp.sendgrid.net", "", 0 )]
     [TextField( "Username", "A Send Grid credential username", true, "", "", 1 )]
-    [IntegerField( "Port", "", false, 25, "", 3 )]
+    [IntegerField( "Port", "", true, 587, "", 3 )]
     [BooleanField( "Use SSL", "", false, "", 4 )]
     [TextField( "Password", "A Send Grid credential password", true, "", "", 2, null, true )]
     public class SendGridSmtp : SMTPComponent
@@ -78,44 +79,42 @@ namespace com.bricksandmortar.SendGrid
         public override void AddAdditionalHeaders( MailMessage message, CommunicationRecipient recipient )
         {
             SendGridHeader header = new SendGridHeader();
-            header.unique_args.communication_recipient_guid = String.Format( recipient.Guid.ToString() );
+            header.filters = new Filters();
+            header.filters.clicktrack = new Clicktrack();
+            header.filters.clicktrack.settings = new Settings();
+            header.unique_args = new UniqueArgs();
+            header.unique_args.communication_recipient_guid = recipient.Guid.ToString();
             header.filters.clicktrack.settings.enable = 1;
             string headerJson = JsonConvert.SerializeObject( header );
             message.Headers.Add( "X-SMTPAPI", headerJson );
         }
 
     }
+
+    public class UniqueArgs
+    {
+        public string communication_recipient_guid { get; set; }
+    }
+
+    public class Settings
+    {
+        public int enable { get; set; }
+    }
+
+    public class Clicktrack
+    {
+        public Settings settings { get; set; }
+    }
+
+    public class Filters
+    {
+        public Clicktrack clicktrack { get; set; }
+    }
+
     public class SendGridHeader
     {
-
-        public class UniqueArgs
-        {
-            public string communication_recipient_guid
-            { get; set; }
-        }
-
-        public class Settings
-        {
-            public int enable
-            { get; set; }
-        }
-
-        public class Clicktrack
-        {
-            public Settings settings
-            { get; set; }
-        }
-
-        public class Filters
-        {
-            public Clicktrack clicktrack
-            { get; set; }
-        }
-
-        public UniqueArgs unique_args
-        { get; set; }
-        public Filters filters
-        { get; set; }
+        public UniqueArgs unique_args { get; set; }
+        public Filters filters { get; set; }
     }
 
 }
