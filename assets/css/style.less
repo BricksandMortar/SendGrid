@@ -1,0 +1,165 @@
+@import "/bootstrap-3.3.6/less/bootstrap.less";
+
+@red: #E95F40;
+@red-darker : darken(@red, 5%);
+
+@orange: #E99F40;
+@orange-darker: darken(@orange, 5%);
+
+@text: #333;
+@text-contrast: #fff;
+
+@link: #407ce9;
+
+p, h1, h2, h3, h4, h5, h6 {
+  color: #333333;
+}
+a {
+  color:@link;
+  &:hover {
+    color: @link;
+  }
+}
+
+span[data-type="action"] {
+  margin: 0 2px;
+  padding: 0px 5px;
+  border: 1px solid #ddd;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+.bs-docs-masthead {
+  padding-top:50px;
+  padding-bottom:40px;
+  margin-bottom:20px;
+  .btn:hover {
+    color: darken(@red-darker, 10%);
+  }
+
+  .not-wall {
+    margin-bottom: 1.2em;
+  }
+}
+.bs-docs-header {
+  h1, p {
+    margin-right:0px;
+  }
+  p {
+    color: #DE7C67;
+  }
+}
+.bs-docs-sidebar .nav > li > a {
+  font-size:15px;
+}
+.bs-docs-sidebar .nav .nav > li > a {
+  font-size:14px;
+}
+.back-top-top {
+  font-size:13px;
+}
+.bs-docs-footer {
+  p {
+    color: #99979c;
+  }
+  a:hover {
+    color: #fff;
+  }
+}
+#content {
+  position:relative;
+  text-shadow: 0 1px 0 rgba(0,0,0,.1);
+}
+
+
+.bs-docs-footer-links .fa
+{
+      margin-right: 3px;
+}
+
+
+
+.landing {
+  .fa {
+    color: @orange;
+  }
+
+  p {
+    margin-left: 4em;
+    margin-right: 4em;
+    padding-bottom: @padding-large-vertical;
+  }
+}
+
+.about-container {
+  border-top: 1px solid #e5e5e5;
+  margin-top: 3em;
+  padding-top: 20px;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.navbar-brand {
+  color: #333;
+}
+
+
+/*
+ * Main navigation
+ *
+ * Turn the `.navbar` at the top of the docs purple.
+ */
+
+.bs-docs-nav {
+  margin-bottom: 0;
+  background-color: #fff;
+  border-bottom: 0;
+}
+.bs-home-nav .bs-nav-b {
+  display: none;
+}
+.bs-docs-nav .navbar-brand,
+.bs-docs-nav .navbar-nav > li > a {
+  font-weight: 500;
+  color: @red-darker;
+}
+.bs-docs-nav .navbar-nav > li > a:hover,
+.bs-docs-nav .navbar-nav > .active > a,
+.bs-docs-nav .navbar-nav > .active > a:hover {
+  color: @red-darker;
+  background-color: #f9f9f9;
+}
+.bs-docs-nav .navbar-toggle .icon-bar {
+  background-color: @red-darker;
+}
+.bs-docs-nav .navbar-header .navbar-toggle {
+  border-color: #fff;
+}
+.bs-docs-nav .navbar-header .navbar-toggle:hover,
+.bs-docs-nav .navbar-header .navbar-toggle:focus {
+  background-color: #f9f9f9;
+  border-color: #f9f9f9;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  .landing {
+
+    p {
+      margin-left: 4em;
+      margin-right: 4em;
+      padding-bottom: @padding-xs-vertical;
+    }
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) {
+ }
