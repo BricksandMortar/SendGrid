@@ -33,14 +33,14 @@ namespace com.bricksandmortar.SendGrid
     /// <summary>
     /// Sends a communication through SMTP protocol
     /// </summary>
-    [Description( "Sends a communication through Send Grid's SMTP API" )]
+    [Description( "Sends a communication through SendGrid's SMTP API" )]
     [Export( typeof( TransportComponent ) )]
-    [ExportMetadata( "ComponentName", "Send Grid SMTP" )]
+    [ExportMetadata( "ComponentName", "SendGrid SMTP" )]
     [TextField( "Server", "", true, "smtp.sendgrid.net", "", 0 )]
-    [TextField( "Username", "A Send Grid credential username", true, "", "", 1 )]
+    [TextField( "Username", "A SendGrid credential username", true, "", "", 1 )]
     [IntegerField( "Port", "", true, 587, "", 3 )]
     [BooleanField( "Use SSL", "", false, "", 4 )]
-    [TextField( "Password", "A Send Grid credential password", true, "", "", 2, null, true )]
+    [TextField( "Password", "A SendGrid credential password", true, "", "", 2, null, true )]
     public class SendGridSmtp : SMTPComponent
     {
         /// <summary>
