@@ -7,12 +7,39 @@ download: false
 <!-- wrap each main section with "bs-docs-section" class -->
 <section class="bs-docs-section">
   <!-- each section must contain ONE h1 with an id and optionally a "page-header" class -->
-  <h1 id="first-level" class="page-header">Setup</h1>
+  <h1 id="setup" class="page-header">Setup</h1>
 
-  <!-- you can optionally declare sub-sections with h2/h3 with an id -->
-  <h2 id="rock-sub-section">Rock</h2>
+  <h2 id="sendgrid-setup">SendGrid Account Setup</h3>
+  <p>To use this plugin you will need a <a href="https://sendgrid.com/">SendGrid account</a>. SendGrid provide a <a href="https://sendgrid.com/pricing">variety</a> of plans for different volumes of sending. The Lite plan is not supported by this plugin but all other plans including the free plan which provides 12,000 emails per month free.</p>
+  <p>After creating an account you'll have to wait for your <a href="https://support.sendgrid.com/hc/en-us/articles/200181628">account provisioning</a> to complete before you are able to send email.
+    <h2 id="sendgrid-configuration">SendGrid Configuration</h3>
+      <h4>Credentials</h4>
+    <p>Version 1.0.0 of the plugin does not currently support API key authorisation for sending so to send an email you'll need configure a credential. To do this from the SendGrid dashboard go to <span data-type="action">Settings > Credentials</span> and then add a new credential. Ensure that only the Mail checkbox is checked, give the credential an appropiate username (for example, rockmail), and a strong password. Remember these for later.
+      <img src="{{site.github.url}}/assets/images/documentation/sendgrid-newcredential.png" class="img-responsive" />
+    </p>
+      <h4>Analytics</h4>
+    <p>{{site.name}} supports email analytics, configuring this is a two step process. First visit <span data-type="action">Settings > Mail Settings</span> on the SendGrid dashboard and switch <span data-type="action">Event Notification</span> on. In the HTTP Post URL box type in your Rock URL followed by <em>/webhooks/SendGrid.ashx</em>. For instance if my Rock site was hosted at http://rock.bricksandmortarstudio.com I'd type in <em>http://rock.bricksandmortarstudio.com/webhooks/SendGrid.ashx</em>. Ensure you select the following actions:
+      <ul>
+        <li>Opened</li>
+        <li>Clicked</li>
+        <li>Dropped</li>
+        <li>Deferred</li>
+        <li>Bounced</li>
+      </ul>
+      <img src="{{site.github.url}}/assets/images/documentation/sendgrid-webhook.png" class="img-responsive" />
+    </p>
+    <p>If you want to track opens and clicks within your emails you will also need to enable tracking. From the SendGrid dashboard visit <span data-type="action">Settings > Tracking</span> and switch <span data-type="action">Click Tracking</span> and <span data-type="action">Open Tracking</span> on.
+      <img src="{{site.github.url}}/assets/images/documentation/sendgrid-tracking.png" class="img-responsive" />
+    </p>
+    <h4>Whitelabels</h4>
+    <p>To ensure the best possible delivery you'll need to configure whitelabels (<span data-type="action">Settings > Whitelabels</span>) for the domain(s) you wish to send mail from. This will involve changing DNS records on those domains and so consequently you may need to help of your network administrator. SendGrid make the process very easy and have <a href="https://support.sendgrid.com/hc/en-us/articles/215904137-Whitelabel-Video-Tutorials">a great video</a> to help you get setup.</p>
+    <h2 id="rock-sub-section">Rock Configuration</h2>
+    <p>Configuring Rock to use SendGrid to deliver your emails is painless. Visit <span data-type="action">Admin Tools > Communications > Communication Transports > SendGrid SMTP</span>, here you'll find the options for configuring SendGrid. Most of the default options here won't need changing (in fact altering the server from smtp.sendgrid.net is a bad idea!) but you will need to put in the username and password credentials you created on the SendGrid dashboard earlier and set the transport to Active.
+        <img src="{{site.github.url}}/assets/images/documentation/rock-transport.png" class="img-responsive" />
+    Then you'll need to go to <span data-type="action">Admin Tools > Communications > Communication Mediums > Email</span> and switch the Communication Transport to SendGrid SMTP.
+  </section>
 
-  <h3 id="idealpostcodes-sub-section">Ideal Postcodes</h3>
-  <p>To use this plugin you will need a <a href="https://ideal-postcodes.co.uk/">Ideal Postcodes account</a>. You can setup without payment with just an email address and password.</p>
-  <p>When you've created a new account you will be prompted to create a new API key, which will come with 15 free lookups to test the service. Before you are able to use the service you will need to authorise your account.
-</section>
+  <section class="bs-docs-section">
+    <h1 id="developers" class="page-header">Developers</h1>
+  <p>The source code for the {{site.name}} is available for use with the <a href="http://www.rockrms.com/Rock/Developer">Rockit SDK</a> is available <a href="https://github.com/{{site.github.user}}/{{site.github.repo}}/releases/latest">here</a></p>.
+  </section>
