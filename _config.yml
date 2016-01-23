@@ -1,5 +1,5 @@
 # name of the software
-name: Generic Project
+name: SendGrid
 # licence of the software
 license: Apache 2.0
 licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -12,9 +12,9 @@ headerLinks:
 # list if additional links on the footer
 footerLinks:
   - title: <i class="fa fa-github"></i>GitHub
-    url: https://github.com/mistic100/jekyll-bootstrap-doc
+    url: https://github.com/BricksandMortar/SendGrid
   - title: <i class="fa fa-exclamation-circle"></i>Issues
-    url: https://github.com/mistic100/jekyll-bootstrap-doc/issues?state=open
+    url: https://github.com/BricksandMortar/SendGrid/issues?state=open
 
 # header
 header:
@@ -34,7 +34,7 @@ analytics:
 # github buttons
 github:
   user: BricksandMortar
-  repo: IdealPostcodes
+  repo: SendGrid
 
 # twitter buttons
 twitter:
