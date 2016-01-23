@@ -14,7 +14,7 @@
 // limitations under the License.
 // </copyright>
 //
-using System;
+
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Net.Mail;
@@ -49,13 +49,7 @@ namespace com.bricksandmortar.SendGrid
         /// <value>
         /// <c>true</c> if transport can track opens; otherwise, <c>false</c>.
         /// </value>
-        public override bool CanTrackOpens
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanTrackOpens => true;
 
         /// <summary>
         /// Gets the recipient status note.
@@ -63,13 +57,7 @@ namespace com.bricksandmortar.SendGrid
         /// <value>
         /// The status note.
         /// </value>
-        public override string StatusNote
-        {
-            get
-            {
-                return String.Format( "Email was recieved for delivery by SendGrid ({0})", RockDateTime.Now );
-            }
-        }
+        public override string StatusNote => $"Email was recieved for delivery by SendGrid ({RockDateTime.Now})";
 
         /// <summary>
         /// Adds any additional headers.
@@ -78,19 +66,18 @@ namespace com.bricksandmortar.SendGrid
         /// <param name="recipient"></param>
         public override void AddAdditionalHeaders( MailMessage message, CommunicationRecipient recipient )
         {
-            SendGridHeader header = new SendGridHeader();
-            header.filters = new Filters();
-            header.filters.clicktrack = new Clicktrack();
-            header.filters.clicktrack.settings = new Settings();
-            header.unique_args = new UniqueArgs();
-            header.unique_args.communication_recipient_guid = recipient.Guid.ToString();
-            header.filters.clicktrack.settings.enable = 1;
+            SendGridHeader header = new SendGridHeader
+            {
+                filters = new Filters {clicktrack = new Clicktrack {settings = new Settings {enable = 1}}},
+                unique_args = new UniqueArgs {communication_recipient_guid = recipient.Guid.ToString()}
+            };
             string headerJson = JsonConvert.SerializeObject( header );
             message.Headers.Add( "X-SMTPAPI", headerJson );
         }
 
     }
 
+    // ReSharper disable InconsistentNaming
     public class UniqueArgs
     {
         public string communication_recipient_guid { get; set; }
@@ -103,6 +90,7 @@ namespace com.bricksandmortar.SendGrid
 
     public class Clicktrack
     {
+        
         public Settings settings { get; set; }
     }
 
@@ -116,5 +104,5 @@ namespace com.bricksandmortar.SendGrid
         public UniqueArgs unique_args { get; set; }
         public Filters filters { get; set; }
     }
-
+    // ReSharper restore InconsistentNaming
 }
