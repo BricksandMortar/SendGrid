@@ -13,15 +13,15 @@ headerLinks:
 footerLinks:
   - title: <i class="fa fa-github"></i>GitHub
     url: https://github.com/BricksandMortar/SendGrid
-  - title: <i class="fa fa-exclamation-circle"></i>Issues
+  - title: Issues
     url: https://github.com/BricksandMortar/SendGrid/issues?state=open
 
 # header
 header:
   #color1: "#D43F3A"
   #color2: "#D4813A"
-  color1: "#e64c29"
-  color2: "#e64c29"
+  color1: "#E64C29"
+  color2: "#E64C29"
 
 rockstore:
   url:
