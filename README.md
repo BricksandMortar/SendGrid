@@ -8,4 +8,7 @@ To download the latest release of the plugin, both the source code and plugin pa
 ## Contribute
 If anything looks broken please flag up an issue.
 
-This project is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html) and uses the [SendGrid Webhooks Library](https://github.com/mirajavora/sendgrid-webhooks).
+This project is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
+
+## Credits
+This project uses the [SendGrid Webhooks Library](https://github.com/mirajavora/sendgrid-webhooks) for the webhook parsing.
