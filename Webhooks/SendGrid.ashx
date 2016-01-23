@@ -77,7 +77,7 @@ public class SendGrid : IHttpHandler
                                 {
                                     case WebhookEventType.Delivered:
                                         communicationRecipient.Status = CommunicationRecipientStatus.Delivered;
-                                        communicationRecipient.StatusNote = String.Format( "Confirmed delivered by SendGrid at {0}", item.TimeStamp.ToString() );
+                                        communicationRecipient.StatusNote = String.Format( "Confirmed delivered by SendGrid at {0}", item.TimeStamp.ToString("o") );
                                         break;
 
                                     case WebhookEventType.Open:
