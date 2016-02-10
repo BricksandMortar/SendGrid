@@ -20,7 +20,7 @@ using System;
 using System.Web;
 using System.IO;
 using System.Text;
-
+using Rock;
 using Sendgrid.Webhooks.Events;
 using Rock.Model;
 
@@ -88,15 +88,15 @@ public class SendGrid : IHttpHandler
                                         if (openEvent != null)
                                         {
                                             communicationRecipient.OpenedDateTime = openEvent.TimeStamp;
-                                            communicationRecipient.OpenedClient = openEvent.UserAgent ?? "Unknown";
+                                            communicationRecipient.OpenedClient = openEvent.UserAgent.Truncate(197) ?? "Unknown";
                                             CommunicationRecipientActivity openActivity =
                                                 new CommunicationRecipientActivity
                                                 {
                                                     ActivityType = "Opened",
                                                     ActivityDateTime = item.TimeStamp,
                                                     ActivityDetail =
-                                                        string.Format("Opened from {0} ({1})",
-                                                            openEvent.UserAgent ?? "unknown", openEvent.Ip)
+                                                        String.Format("Opened from {0} ({1})",
+                                                            openEvent.UserAgent ?? "unknown", openEvent.Ip).Truncate(2197)
                                                 };
                                             communicationRecipient.Activities.Add( openActivity );
                                         }
@@ -110,8 +110,8 @@ public class SendGrid : IHttpHandler
                                         if (clickEvent != null)
                                         {
                                             clickActivity.ActivityDetail =
-                                                string.Format("Clicked the address {0} from {1} using {2}",
-                                                    clickEvent.Url, clickEvent.Ip, clickEvent.UserAgent);
+                                                String.Format("Clicked the address {0} from {1} using {2}",
+                                                    clickEvent.Url, clickEvent.Ip, clickEvent.UserAgent).Truncate(2197);
                                         }
                                         communicationRecipient.Activities.Add( clickActivity );
                                         break;
