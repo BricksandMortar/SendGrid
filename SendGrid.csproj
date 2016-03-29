@@ -35,15 +35,17 @@
       <HintPath>..\..\Documents\Visual Studio 2015\Projects\bricksandmortarstudio.com_Rockit\RockWeb\Bin\DotLiquid.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Documents\Visual Studio 2015\Projects\bricksandmortarstudio.com_Rockit\RockWeb\Bin\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\Rock RMS\Rock\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Rock">
-      <HintPath>..\..\Documents\Visual Studio 2015\Projects\bricksandmortarstudio.com_Rockit\RockWeb\Bin\Rock.dll</HintPath>
+    <Reference Include="Sendgrid.Webhooks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Rock RMS\Rock\packages\Sendgrid.Webhooks.1.0.1\lib\net40\Sendgrid.Webhooks.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,7 +57,12 @@
     <Compile Include="Communication\Transport\SendGridSmtp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Rock RMS\Rock\Rock\Rock.csproj">
+      <Project>{8f8c2a79-24f4-4157-8b99-45f75fa85799}</Project>
+      <Name>Rock</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Webhooks\SendGrid.ashx" />
