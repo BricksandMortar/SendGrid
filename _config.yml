@@ -4,6 +4,8 @@ name: SendGrid Email Transport
 license: Apache 2.0
 licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
 
+#baseurl: /SendGrid
+
 # list of additional links on the right of the top menu
 headerLinks:
 #  - title: GitHub
