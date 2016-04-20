@@ -32,7 +32,11 @@ build:
   verbosity: minimal
 after_build:
 - ps: >-
-    $path = $out+'\out'
+    #The path for the staging directory
+    
+    $path = $env:APPVEYOR_BUILD_FOLDER+'\out'
+
+    #Regex for stripping directory leads for Rock .lst files
 
     $regex = '^(\.*\\*\.)*'
 
