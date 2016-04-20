@@ -180,3 +180,7 @@ $RECYCLE.BIN/
 
 #Jekyll
 /_site
+script/
+assets/
+_layouts/
+Gemfile.lock

@@ -1,0 +1,131 @@
+version: 1.1.{build}
+branches:
+  except:
+  - pages
+configuration: Release
+clone_folder: C:\projects\SendGrid
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+environment:
+  nuget_user: user@bricksandmortarstudio.com
+  nuget_password: aHlingenDPOt
+install:
+- ps: >-
+    If ($env:APPVEYOR_REPO_BRANCH -eq "master"){
+
+    nuget sources add -Name "Rock Develop" -Source https://ci.appveyor.com/nuget/bricks-Rock-master
+
+    }
+
+    Else{
+
+    nuget sources add -Name "Rock Develop" -Source https://ci.appveyor.com/nuget/bricks-rock-develop
+
+    }
+before_build:
+- cmd: nuget restore C:\projects\SendGrid\SendGrid.sln
+build:
+  verbosity: minimal
+after_build:
+- ps: >-
+    $path = $out+'\out'
+
+    $regex = '^(\.*\\*\.)*'
+
+
+    New-Item $path -type directory
+
+    New-Item $path\content -type directory
+
+    New-Item $path\uninstall -type directory
+
+    New-Item $path\content\bin -type directory
+
+    New-Item $path\content\Webhooks -type directory
+
+
+
+    Copy-Item $env:APPVEYOR_BUILD_FOLDER\SendGrid\bin\Release\com.bricksandmortarstudio.SendGrid.dll $path\content\bin\
+
+    Copy-Item $env:APPVEYOR_BUILD_FOLDER\SendGrid\RockWeb\Webhooks\SendGrid.ashx $path\content\Webhooks
+
+
+    # Setup source and destination paths
+
+    $Src = $env:APPVEYOR_BUILD_FOLDER
+
+    $Dst = $path+'\content\bin'
+
+
+    # Wildcard for filter
+
+    $Extension = 'Sendgrid.Webhooks.dll'
+
+
+    # Get file objects recursively
+
+    Get-ChildItem -Path $Src -Filter $Extension -Recurse |
+        # Skip directories, because XXXReadMe.txt is a valid directory name
+        Where-Object {!$_.PsIsContainer} |
+            # For each file
+            ForEach-Object {
+
+                # If file exist in destination folder, rename it with directory tag
+                if(Test-Path -Path (Join-Path -Path $Dst -ChildPath $_.Name))
+                {
+                    # Get full path to the file without drive letter and replace `\` with '-'
+                    # [regex]::Escape is needed because -replace uses regex, so we should escape '\'
+                    $NameWithDirTag = (Split-Path -Path $_.FullName -NoQualifier)  -replace [regex]::Escape('\'), '-'
+
+                    # Join new file name with destination directory
+                    $NewPath = Join-Path -Path $Dst -ChildPath $NameWithDirTag
+                }
+                # Don't modify new file path, if file doesn't exist in target dir
+                else
+                {
+                    $NewPath = $Dst
+                }
+
+                # Copy file
+                Copy-Item -Path $_.FullName -Destination $NewPath
+            }
+
+    Remove-Item $path\content\bin\* -Include '*-*'
+
+
+    Get-ChildItem $path\content\*.* -Recurse | Resolve-Path -Relative | Set-Content $path\uninstall\deletefile.lst
+
+    (Get-Content $path\uninstall\deletefile.lst) -replace $regex, '' | Set-Content $path\uninstall\deletefile.lst
+
+
+    $name = $env:APPVEYOR_PROJECT_NAME+'-v'+$env:APPVEYOR_BUILD_VERSION+'.plugin'
+
+
+    $command = 'cmd.exe /C  7z a -tzip -r ' + $path + '\' + $name + ' ' + $path + '\*'
+
+
+    Invoke-Expression -Command:$command
+
+    Get-ChildItem $path/*.plugin| % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+test: off
+artifacts:
+- path: '**\*.plugin'
+  name: Plugin
+deploy:
+- provider: GitHub
+  tag: 
+  release: Version $(appveyor_build_version)
+  description: Description
+  auth_token:
+    secure: purnbQq+/7nii64HdaMRg++QQARjdTJ3VYVIq8EQBR7NxrTp46pw+JIxLjbL/obW
+  artifact: /.*\.plugin/
+  draft: true
+  prerelease: false
+  force_update: true
+  on:
+    branch: master
+    APPVEYOR_REPO_TAG: true
