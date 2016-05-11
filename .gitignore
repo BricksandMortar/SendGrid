@@ -118,3 +118,4 @@ Properties/AssemblyInfo.cs
 packages.config
 SendGrid.csproj
 #Endignore copied from other repo branch
+packages/
