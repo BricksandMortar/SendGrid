@@ -1,7 +1,8 @@
 version: 1.1.{build}
 branches:
   except:
-  - pages
+  - pages-ci
+  - gh-pages
 configuration: Release
 clone_folder: C:\projects\SendGrid
 assembly_info:
@@ -33,7 +34,7 @@ build:
 after_build:
 - ps: >-
     #The path for the staging directory
-    
+
     $path = $env:APPVEYOR_BUILD_FOLDER+'\out'
 
     #Regex for stripping directory leads for Rock .lst files
@@ -121,7 +122,7 @@ artifacts:
   name: Plugin
 deploy:
 - provider: GitHub
-  tag: 
+  tag:
   release: Version $(appveyor_build_version)
   description: Description
   auth_token:
