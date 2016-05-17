@@ -16,30 +16,30 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Net.Mail;
+using Newtonsoft.Json.Linq;
 
 using Rock;
-using System.Net.Mail;
 using Rock.Attribute;
 using Rock.Communication;
 using Rock.Communication.Transport;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 
-namespace com.bricksandmortar.SendGrid
+namespace com.bricksandmortarstudio.SendGrid.Communication.Transport
 {
     /// <summary>
     /// Sends a communication through SMTP protocol
     /// </summary>
-    [Description( "Sends a communication through SendGrid's SMTP API" )]
-    [Export( typeof( TransportComponent ) )]
-    [ExportMetadata( "ComponentName", "SendGrid SMTP" )]
-    [TextField( "Server", "", true, "smtp.sendgrid.net", "", 0 )]
-    [TextField( "Username", "A SendGrid credential username", true, "", "", 1 )]
-    [IntegerField( "Port", "", true, 587, "", 3 )]
-    [BooleanField( "Use SSL", "", false, "", 4 )]
-    [TextField( "Password", "A SendGrid credential password", true, "", "", 2, null, true )]
+    [Description("Sends a communication through SendGrid's SMTP API")]
+    [Export(typeof(TransportComponent))]
+    [ExportMetadata("ComponentName", "SendGrid SMTP")]
+    [TextField("Server", "", true, "smtp.sendgrid.net")]
+    [TextField("Username", "A SendGrid credential username", true, "", "", 1)]
+    [IntegerField("Port", "", true, 587, "", 3)]
+    [BooleanField("Use SSL", "", false, "", 4)]
+    [TextField("Password", "A SendGrid credential password", true, "", "", 2, null, true)]
     public class SendGridSmtp : SMTPComponent
     {
         /// <summary>
@@ -48,7 +48,10 @@ namespace com.bricksandmortar.SendGrid
         /// <value>
         /// <c>true</c> if transport can track opens; otherwise, <c>false</c>.
         /// </value>
-        public override bool CanTrackOpens => true;
+        public override bool CanTrackOpens
+        {
+            get { return true; }
+        }
 
         /// <summary>
         /// Gets the recipient status note.
@@ -56,7 +59,10 @@ namespace com.bricksandmortar.SendGrid
         /// <value>
         /// The status note.
         /// </value>
-        public override string StatusNote => $"Email was recieved for delivery by SendGrid ({RockDateTime.Now})";
+        public override string StatusNote
+        {
+            get { return String.Format("Email was received for delivery by SendGrid ({0})", RockDateTime.Now); }
+        }
 
         /// <summary>
         /// Adds any additional headers.
@@ -79,10 +85,9 @@ namespace com.bricksandmortar.SendGrid
             var filters = new JProperty("filters",
                 new JObject(new JProperty("clicktrack",
                     new JObject(new JProperty("settings",
-                    new JObject(new JProperty("enable", 1)))))));
+                        new JObject(new JProperty("enable", 1)))))));
             header.Add(filters);
             message.Headers.Add("X-SMTPAPI", header.ToString());
         }
-
     }
 }
