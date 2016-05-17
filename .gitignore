@@ -119,3 +119,16 @@ packages.config
 SendGrid.csproj
 #Endignore copied from other repo branch
 packages/
+.bundle/config
+apple-touch-icon-114x114.png
+apple-touch-icon-120x120.png
+apple-touch-icon-144x144.png
+apple-touch-icon-152x152.png
+apple-touch-icon-57x57.png
+favicon-16x16.png
+favicon-32x32.png
+favicon.ico
+mstile-144x144.png
+mstile-310x310.png
+assets/less/bootstrap-3.3.6/
+documentation/_site/index.html
