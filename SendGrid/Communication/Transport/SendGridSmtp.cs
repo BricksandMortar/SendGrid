@@ -15,6 +15,7 @@
 // </copyright>
 //
 
+using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Net.Mail;
@@ -26,7 +27,6 @@ using Rock.Attribute;
 using Rock.Model;
 using Rock.Communication;
 using Rock.Communication.Transport;
-using System.Collections.Generic;
 
 namespace com.bricksandmortar.SendGrid
 {
@@ -49,7 +49,10 @@ namespace com.bricksandmortar.SendGrid
         /// <value>
         /// <c>true</c> if transport can track opens; otherwise, <c>false</c>.
         /// </value>
-        public override bool CanTrackOpens => true;
+        public override bool CanTrackOpens
+        {
+            get { return true; }
+        }
 
         /// <summary>
         /// Gets the recipient status note.
@@ -57,7 +60,10 @@ namespace com.bricksandmortar.SendGrid
         /// <value>
         /// The status note.
         /// </value>
-        public override string StatusNote => $"Email was recieved for delivery by SendGrid ({RockDateTime.Now})";
+        public override string StatusNote
+        {
+            get { return String.Format("Email was recieved for delivery by SendGrid ({0})", RockDateTime.Now); }
+        }
 
         /// <summary>
         /// Adds any additional headers.
