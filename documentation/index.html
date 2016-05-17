@@ -35,11 +35,11 @@ download: false
     <p>To ensure the best possible delivery you'll need to configure whitelabels (<span data-type="action">Settings > Whitelabels</span>) for the domain(s) you wish to send mail from. This will involve changing DNS records on those domains and so consequently you may need to help of your network administrator. SendGrid make the process very easy and have <a href="https://support.sendgrid.com/hc/en-us/articles/215904137-Whitelabel-Video-Tutorials">a great video</a> to help you get setup.</p>
     <h2 id="rock-sub-section">Rock Configuration</h2>
     <p>Configuring Rock to use SendGrid to deliver your emails is painless. Visit <span data-type="action">Admin Tools > Communications > Communication Transports > SendGrid SMTP</span>. Here you'll find the options for configuring SendGrid. Most of the default options here won't need changing (in fact altering the server from smtp.sendgrid.net is a bad idea!) but you will need to put in the username and password credentials you created on the SendGrid dashboard earlier and set the transport to Active.
-        <a href="#" data-featherlight="#feather-transport"><img src="{{site.github.url}}/assets/images/documentation/rock-transport.png" class="img-responsive" id="feather-transport" alt="Rock Transport Setup" /></a>
+        <a href="{{site.github.url}}/assets/images/documentation/rock-transport.png" data-featherlight><img src="{{site.github.url}}/assets/images/documentation/rock-transport.png" class="img-responsive" id="feather-transport" alt="Rock Transport Setup" /></a>
     Then you'll need to go to <span data-type="action">Admin Tools > Communications > Communication Mediums > Email</span> and switch the Communication Transport to SendGrid SMTP.
   </section>
 
   <section class="bs-docs-section">
     <h1 id="developers" class="page-header">Developers</h1>
-  <p>The source code for the {{site.name}} is available for use with the <a href="http://www.rockrms.com/Rock/Developer">Rockit SDK</a> is available <a href="https://github.com/{{site.github.user}}/{{site.github.repo}}/releases/latest">here</a></p>.
+  <p>The source code for the {{site.name}} is available <a href="https://github.com/{{site.github.user}}/{{site.github.repo}}/releases/latest">here</a> for use with the <a href="http://www.rockrms.com/Rock/Developer">Rockit SDK</a></p>.
   </section>
