@@ -62,7 +62,7 @@ namespace com.bricksandmortar.SendGrid
         /// </value>
         public override string StatusNote
         {
-            get { return String.Format("Email was recieved for delivery by SendGrid ({0})", RockDateTime.Now); }
+            get { return String.Format("Email was received for delivery by SendGrid ({0})", RockDateTime.Now); }
         }
 
         /// <summary>
