@@ -16,17 +16,7 @@ environment:
   nuget_password: aHlingenDPOt
 install:
 - ps: >-
-    If ($env:APPVEYOR_REPO_BRANCH -eq "master"){
-
-    nuget sources add -Name "Rock Develop" -Source https://ci.appveyor.com/nuget/bricks-Rock-master
-
-    }
-
-    Else{
-
     nuget sources add -Name "Rock Develop" -Source https://ci.appveyor.com/nuget/bricks-rock-develop
-
-    }
 before_build:
 - cmd: nuget restore C:\projects\SendGrid\SendGrid.sln
 build:
