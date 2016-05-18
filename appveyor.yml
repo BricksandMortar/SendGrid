@@ -1,4 +1,4 @@
-version: 1.1.{build}
+version: 1.1.2.{build}
 branches:
   except:
   - pages-ci
@@ -105,10 +105,9 @@ after_build:
 
     Invoke-Expression -Command:$command
 
-    Get-ChildItem $path/*.plugin| % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 test: off
 artifacts:
-- path: '**\*.plugin'
+- path: '$path\*.plugin'
   name: Plugin
 deploy:
 - provider: GitHub
@@ -119,8 +118,8 @@ deploy:
     secure: purnbQq+/7nii64HdaMRg++QQARjdTJ3VYVIq8EQBR7NxrTp46pw+JIxLjbL/obW
   artifact: /.*\.plugin/
   draft: true
-  prerelease: false
+  prerelease: true
   force_update: true
   on:
-    branch: master
+    branch: master, develop
     APPVEYOR_REPO_TAG: true
