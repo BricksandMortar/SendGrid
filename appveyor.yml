@@ -105,10 +105,8 @@ after_build:
 
     Invoke-Expression -Command:$command
 
+    Get-ChildItem $path/*.plugin| % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 test: off
-artifacts:
-- path: '$path\*.plugin'
-  name: Plugin
 deploy:
 - provider: GitHub
   tag:
@@ -118,8 +116,8 @@ deploy:
     secure: purnbQq+/7nii64HdaMRg++QQARjdTJ3VYVIq8EQBR7NxrTp46pw+JIxLjbL/obW
   artifact: /.*\.plugin/
   draft: true
-  prerelease: true
+  prerelease: false
   force_update: true
   on:
-    branch: master, develop
+    branch: master
     APPVEYOR_REPO_TAG: true
