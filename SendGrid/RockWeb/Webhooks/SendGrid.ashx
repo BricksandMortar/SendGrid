@@ -31,56 +31,54 @@ public class SendGrid : IHttpHandler
     private HttpResponse _response;
     private int _transactionCount;
 
-    public void ProcessRequest( HttpContext context )
+    public void ProcessRequest(HttpContext context)
     {
         _request = context.Request;
         _response = context.Response;
 
         _response.ContentType = "text/plain";
 
-        if ( !( _request.HttpMethod == "POST" && _request.ContentType.Contains( "application/json" ) ) )
+        if (!(_request.HttpMethod == "POST" && _request.ContentType.Contains("application/json")))
         {
-            _response.Write( "Invalid request type." );
+            _response.Write("Invalid request type.");
             return;
         }
 
-        if ( _request != null )
+        if (_request != null)
         {
-            string postedData = GetDocumentContents( _request );
+            string postedData = GetDocumentContents(_request);
 
             var rockContext = new Rock.Data.RockContext();
 
-            var communicationRecipientService = new CommunicationRecipientService( rockContext );
+            var communicationRecipientService = new CommunicationRecipientService(rockContext);
 
             var parser = new Sendgrid.Webhooks.Service.WebhookParser();
-            var events = parser.ParseEvents( postedData );
+            var events = parser.ParseEvents(postedData);
 
-            if ( events != null )
+            if (events != null)
             {
                 int unsavedCommunicationCount = 0;
-                foreach ( var item in events )
+                foreach (var item in events)
                 {
                     _transactionCount++;
                     unsavedCommunicationCount++;
                     // Process a SendEmailWithEvents workflow action 
-                    if ( item.UniqueParameters.ContainsKey( "workflow_action_guid" ) )
+                    if (item.UniqueParameters.ContainsKey("workflow_action_guid"))
                     {
                         var actionGuid = item.UniqueParameters["workflow_action_guid"].AsGuidOrNull();
-                            string status = string.Empty;
-                            switch ( item.EventType )
-                            {
-                                case WebhookEventType.Delivered: status = SendEmailWithEvents.SENT_STATUS; break;
-                                case WebhookEventType.Open: status = SendEmailWithEvents.OPENED_STATUS; break;
-                                case WebhookEventType.Click: status = SendEmailWithEvents.CLICKED_STATUS; break;
-                                case WebhookEventType.SpamReport: 
-                                case WebhookEventType.Bounce:
-                                case WebhookEventType.Dropped:
-                                case WebhookEventType.Unsubscribe:
-                                case WebhookEventType.Group_Unsubscribe:
-                                    status = SendEmailWithEvents.FAILED_STATUS; break;
-                                case WebhookEventType.Group_Resubscribe:
-                                    break;
-                            }
+                        string status = string.Empty;
+                        switch (item.EventType)
+                        {
+                            case WebhookEventType.Delivered: status = SendEmailWithEvents.SENT_STATUS; break;
+                            case WebhookEventType.Open: status = SendEmailWithEvents.OPENED_STATUS; break;
+                            case WebhookEventType.Click: status = SendEmailWithEvents.CLICKED_STATUS; break;
+                            case WebhookEventType.Dropped:
+                            case WebhookEventType.SpamReport:
+                            case WebhookEventType.Unsubscribe:
+                            case WebhookEventType.Group_Unsubscribe:
+                            case WebhookEventType.Bounce: status = SendEmailWithEvents.FAILED_STATUS; break;
+
+                        }
 
                         if (actionGuid != null && !string.IsNullOrWhiteSpace(status))
                         {
@@ -126,7 +124,7 @@ public class SendGrid : IHttpHandler
                                         }
                                         break;
                                     case WebhookEventType.Click:
-                                        var clickActivity = new CommunicationRecipientActivity {ActivityType = "Click"};
+                                        var clickActivity = new CommunicationRecipientActivity { ActivityType = "Click" };
                                         var clickEvent = item as ClickEvent;
                                         clickActivity.ActivityDateTime = item.TimeStamp;
                                         if (clickEvent != null)
@@ -137,35 +135,67 @@ public class SendGrid : IHttpHandler
                                         }
                                         communicationRecipient.Activities.Add(clickActivity);
                                         break;
+                                    case WebhookEventType.Dropped:
+                                        var dropEvent = item as DroppedEvent;
+                                        communicationRecipient.Status = CommunicationRecipientStatus.Failed;
+                                        communicationRecipient.StatusNote = string.Format("{0} by SendGrid at {1}", dropEvent.Reason, dropEvent.TimeStamp);
+                                        break;
+                                    case WebhookEventType.Bounce:
+                                        var bounceEvent = item as BounceEvent;
+                                        communicationRecipient.Status = CommunicationRecipientStatus.Failed;
+                                        if (bounceEvent != null)
+                                        {
+                                            communicationRecipient.StatusNote = string.Format("{0} by SendGrid at {1} - {2}", bounceEvent.BounceType, bounceEvent.TimeStamp, bounceEvent.Reason);
+                                        }
+                                        break;
+                                    case WebhookEventType.Unsubscribe:
+                                    case WebhookEventType.SpamReport:
+                                    case WebhookEventType.Group_Unsubscribe:
+                                        communicationRecipient.Status = CommunicationRecipientStatus.Failed;
+                                        communicationRecipient.StatusNote = string.Format("Unsubscribed or reported as spam at {0}",
+                                            item.TimeStamp);
+                                        break;
                                 }
                             }
                         }
-
-                        // save every 100 changes
-                        if (unsavedCommunicationCount >= 100)
-                        {
-                            rockContext.SaveChanges();
-                            unsavedCommunicationCount = 0;
-                        }
                     }
 
-                    // final save
-                    rockContext.SaveChanges();
+                    // save every 100 changes
+                    if (unsavedCommunicationCount >= 100)
+                    {
+                        rockContext.SaveChanges();
+                        unsavedCommunicationCount = 0;
+                    }
 
                     // if bounced process the bounced message
-                    if (item.EventType == WebhookEventType.Bounce)
+                    if (item.EventType == WebhookEventType.Bounce || item.EventType == WebhookEventType.Dropped ||
+                            item.EventType == WebhookEventType.SpamReport || item.EventType == WebhookEventType.Unsubscribe ||
+                            item.EventType  == WebhookEventType.Group_Unsubscribe)
                     {
-                        var bounceEvent = item as BounceEvent;
-                        if (bounceEvent != null)
+                        string failDescription = String.Empty;
+                        switch (item.EventType)
                         {
-                            string bounceDescription = bounceEvent.Reason ?? string.Empty;
-                            if (!string.IsNullOrEmpty(item.Email))
+                            case WebhookEventType.Bounce:
+                                var bounceEvent = item as BounceEvent;
+                                failDescription = bounceEvent.Reason ?? string.Empty;
+                                break;
+                            case WebhookEventType.Dropped:
+                            var dropEvent = item as BounceEvent;
+                            if (dropEvent != null)
                             {
-                                Rock.Communication.Email.ProcessBounce(item.Email, Rock.Communication.BounceType.HardBounce, bounceDescription, item.TimeStamp);
+                                failDescription = dropEvent.Reason ?? string.Empty;
+
                             }
+                            break;
+                        }
+                        if (!string.IsNullOrEmpty(item.Email))
+                        {
+                            Rock.Communication.Email.ProcessBounce(item.Email, Rock.Communication.BounceType.HardBounce, failDescription, item.TimeStamp);
                         }
                     }
                 }
+                // final save
+                rockContext.SaveChanges();
             }
         }
 
