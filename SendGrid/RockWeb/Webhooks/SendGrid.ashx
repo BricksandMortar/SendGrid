@@ -1,21 +1,4 @@
 ﻿<%@ WebHandler Language="C#" Class="SendGrid" %>
-// <copyright>
-// Copyright 2013 by the Spark Development Network
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// </copyright>
-//
-
 using System;
 using System.Web;
 using System.IO;
@@ -110,7 +93,7 @@ public class SendGrid : IHttpHandler
                                         if (openEvent != null)
                                         {
                                             communicationRecipient.OpenedDateTime = openEvent.TimeStamp;
-                                            communicationRecipient.OpenedClient = openEvent.UserAgent.Truncate(197) ??
+                                            communicationRecipient.OpenedClient = openEvent.UserAgent.Truncate(200) ??
                                                                                   "Unknown";
                                             var openActivity = new CommunicationRecipientActivity
                                             {
@@ -118,7 +101,7 @@ public class SendGrid : IHttpHandler
                                                 ActivityDateTime = item.TimeStamp,
                                                 ActivityDetail =
                                                     string.Format("Opened from {0} ({1})", openEvent.UserAgent ?? "unknown",
-                                                        openEvent.Ip).Truncate(2197)
+                                                        openEvent.Ip).Truncate(2200)
                                             };
                                             communicationRecipient.Activities.Add(openActivity);
                                         }
@@ -131,7 +114,7 @@ public class SendGrid : IHttpHandler
                                         {
                                             clickActivity.ActivityDetail =
                                                 string.Format("Clicked the address {0} from {1} using {2}", clickEvent.Url,
-                                                    clickEvent.Ip, clickEvent.UserAgent).Truncate(2197);
+                                                    clickEvent.Ip, clickEvent.UserAgent).Truncate(2200);
                                         }
                                         communicationRecipient.Activities.Add(clickActivity);
                                         break;
@@ -190,7 +173,7 @@ public class SendGrid : IHttpHandler
                         }
                         if (!string.IsNullOrEmpty(item.Email))
                         {
-                            Rock.Communication.Email.ProcessBounce(item.Email, Rock.Communication.BounceType.HardBounce, failDescription, item.TimeStamp);
+                            Rock.Communication.Email.ProcessBounce(item.Email, Rock.Communication.BounceType.HardBounce, failDescription.Truncate(250), item.TimeStamp);
                         }
                     }
                 }
