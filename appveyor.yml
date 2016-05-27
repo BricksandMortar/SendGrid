@@ -1,4 +1,4 @@
-version: 1.1.{build}
+version: 1.0.3.{build}
 branches:
   except:
   - pages-ci
@@ -16,17 +16,7 @@ environment:
   nuget_password: aHlingenDPOt
 install:
 - ps: >-
-    If ($env:APPVEYOR_REPO_BRANCH -eq "master"){
-
-    nuget sources add -Name "Rock Develop" -Source https://ci.appveyor.com/nuget/bricks-Rock-master
-
-    }
-
-    Else{
-
-    nuget sources add -Name "Rock Develop" -Source https://ci.appveyor.com/nuget/bricks-rock-develop
-
-    }
+    nuget sources add -Name "Rock Stable" -Source https://ci.appveyor.com/nuget/bricks-Rock-master
 before_build:
 - cmd: nuget restore C:\projects\SendGrid\SendGrid.sln
 build:
@@ -132,5 +122,4 @@ deploy:
   prerelease: false
   force_update: true
   on:
-    branch: master
     APPVEYOR_REPO_TAG: true
