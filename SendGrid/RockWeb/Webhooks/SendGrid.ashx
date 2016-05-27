@@ -32,7 +32,7 @@ public class SendGrid : IHttpHandler
             string postedData = GetDocumentContents(_request);
 
             var rockContext = new Rock.Data.RockContext();
-            var timeOffset = RockDateTime.OrgTimeZoneInfo.BaseUtcOffset;
+            var timeZoneInfo = RockDateTime.OrgTimeZoneInfo;
             var communicationRecipientService = new CommunicationRecipientService(rockContext);
 
             var parser = new Sendgrid.Webhooks.Service.WebhookParser();
@@ -79,26 +79,27 @@ public class SendGrid : IHttpHandler
 
                             if (communicationRecipient != null)
                             {
+                                item.TimeStamp = TimeZoneInfo.ConvertTime(item.TimeStamp, timeZoneInfo);
                                 switch (item.EventType)
                                 {
                                     case WebhookEventType.Delivered:
                                         communicationRecipient.Status = CommunicationRecipientStatus.Delivered;
                                         communicationRecipient.StatusNote =
                                             string.Format("Confirmed delivered by SendGrid at {0}",
-                                                (item.TimeStamp + timeOffset).ToString("o"));
+                                                item.TimeStamp.ToString("o"));
                                         break;
                                     case WebhookEventType.Open:
                                         communicationRecipient.Status = CommunicationRecipientStatus.Opened;
                                         var openEvent = item as OpenEvent;
                                         if (openEvent != null)
                                         {
-                                            communicationRecipient.OpenedDateTime = openEvent.TimeStamp + timeOffset;
+                                            communicationRecipient.OpenedDateTime = openEvent.TimeStamp;
                                             communicationRecipient.OpenedClient = openEvent.UserAgent.Truncate(200) ??
                                                                                   "Unknown";
                                             var openActivity = new CommunicationRecipientActivity
                                             {
                                                 ActivityType = "Opened",
-                                                ActivityDateTime = item.TimeStamp + timeOffset,
+                                                ActivityDateTime = openEvent.TimeStamp,
                                                 ActivityDetail =
                                                     string.Format("Opened from {0} ({1})", openEvent.UserAgent ?? "unknown",
                                                         openEvent.Ip).Truncate(2200)
@@ -109,7 +110,7 @@ public class SendGrid : IHttpHandler
                                     case WebhookEventType.Click:
                                         var clickActivity = new CommunicationRecipientActivity { ActivityType = "Click" };
                                         var clickEvent = item as ClickEvent;
-                                        clickActivity.ActivityDateTime = item.TimeStamp + timeOffset;
+                                        clickActivity.ActivityDateTime = item.TimeStamp;
                                         if (clickEvent != null)
                                         {
                                             clickActivity.ActivityDetail =
@@ -121,14 +122,17 @@ public class SendGrid : IHttpHandler
                                     case WebhookEventType.Dropped:
                                         var dropEvent = item as DroppedEvent;
                                         communicationRecipient.Status = CommunicationRecipientStatus.Failed;
-                                        communicationRecipient.StatusNote = string.Format("{0} by SendGrid at {1}", dropEvent.Reason, (dropEvent.TimeStamp + timeOffset).ToString("o"));
+                                        if (dropEvent != null)
+                                        {
+                                            communicationRecipient.StatusNote = string.Format("{0} by SendGrid at {1}", dropEvent.Reason, dropEvent.TimeStamp.ToString("o"));
+                                        }
                                         break;
                                     case WebhookEventType.Bounce:
                                         var bounceEvent = item as BounceEvent;
                                         communicationRecipient.Status = CommunicationRecipientStatus.Failed;
                                         if (bounceEvent != null)
                                         {
-                                            communicationRecipient.StatusNote = string.Format("{0} by SendGrid at {1} - {2}", bounceEvent.BounceType, (bounceEvent.TimeStamp + timeOffset).ToString("o"), bounceEvent.Reason);
+                                            communicationRecipient.StatusNote = string.Format("{0} by SendGrid at {1} - {2}", bounceEvent.BounceType, bounceEvent.TimeStamp.ToString("o"), bounceEvent.Reason);
                                         }
                                         break;
                                     case WebhookEventType.Unsubscribe:
@@ -136,7 +140,7 @@ public class SendGrid : IHttpHandler
                                     case WebhookEventType.Group_Unsubscribe:
                                         communicationRecipient.Status = CommunicationRecipientStatus.Failed;
                                         communicationRecipient.StatusNote = string.Format("Unsubscribed or reported as spam at {0}",
-                                            (item.TimeStamp + timeOffset).ToString("o"));
+                                            item.TimeStamp.ToString("o"));
                                         break;
                                 }
                             }
@@ -173,7 +177,7 @@ public class SendGrid : IHttpHandler
                         }
                         if (!string.IsNullOrEmpty(item.Email))
                         {
-                            Rock.Communication.Email.ProcessBounce(item.Email, Rock.Communication.BounceType.HardBounce, failDescription.Truncate(250), item.TimeStamp + timeOffset);
+                            Rock.Communication.Email.ProcessBounce(item.Email, Rock.Communication.BounceType.HardBounce, failDescription.Truncate(250), item.TimeStamp);
                         }
                     }
                 }
