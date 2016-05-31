@@ -61,7 +61,7 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Webhooks\SendGrid.ashx">
+    <None Include="RockWeb\Webhooks\SendGrid.ashx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
