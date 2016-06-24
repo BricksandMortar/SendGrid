@@ -34,7 +34,7 @@ public class SendGrid : IHttpHandler
             var rockContext = new Rock.Data.RockContext();
             
             var communicationRecipientService = new CommunicationRecipientService(rockContext);
-            var communicationRecipientActivityService = new CommunicationRecipientActivityService();
+            var communicationRecipientActivityService = new CommunicationRecipientActivityService(rockContext);
 
             var timeZoneInfo = RockDateTime.OrgTimeZoneInfo;
             var parser = new Sendgrid.Webhooks.Service.WebhookParser();
