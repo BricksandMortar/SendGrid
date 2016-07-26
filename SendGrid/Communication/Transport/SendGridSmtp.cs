@@ -16,31 +16,30 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Net.Mail;
-
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 using Rock;
 using Rock.Attribute;
-using Rock.Model;
 using Rock.Communication;
 using Rock.Communication.Transport;
 
-namespace com.bricksandmortar.SendGrid
+namespace com.bricksandmortarstudio.SendGrid.Communication.Transport
 {
     /// <summary>
     /// Sends a communication through SMTP protocol
     /// </summary>
-    [Description( "Sends a communication through SendGrid's SMTP API" )]
-    [Export( typeof( TransportComponent ) )]
-    [ExportMetadata( "ComponentName", "SendGrid SMTP" )]
-    [TextField( "Server", "", true, "smtp.sendgrid.net", "", 0 )]
-    [TextField( "Username", "A SendGrid credential username", true, "", "", 1 )]
-    [IntegerField( "Port", "", true, 587, "", 3 )]
-    [BooleanField( "Use SSL", "", false, "", 4 )]
-    [TextField( "Password", "A SendGrid credential password", true, "", "", 2, null, true )]
+    [Description("Sends a communication through SendGrid's SMTP API")]
+    [Export(typeof(TransportComponent))]
+    [ExportMetadata("ComponentName", "SendGrid SMTP")]
+    [TextField("Server", "", true, "smtp.sendgrid.net")]
+    [TextField("Username", "A SendGrid credential username", true, "", "", 1)]
+    [IntegerField("Port", "", true, 587, "", 3)]
+    [BooleanField("Use SSL", "", false, "", 4)]
+    [TextField("Password", "A SendGrid credential password", true, "", "", 2, null, true)]
     public class SendGridSmtp : SMTPComponent
     {
         /// <summary>
@@ -70,45 +69,25 @@ namespace com.bricksandmortar.SendGrid
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="recipient"></param>
-        public override void AddAdditionalHeaders( MailMessage message, CommunicationRecipient recipient )
+        public override void AddAdditionalHeaders(MailMessage message, Dictionary<string, string> headers)
         {
-            SendGridHeader header = new SendGridHeader
+            //Add SendGrid tracking header
+            var header = new JObject();
+            if (headers != null)
             {
-                filters = new Filters {clicktrack = new Clicktrack {settings = new Settings {enable = 1}}},
-                unique_args = new UniqueArgs {communication_recipient_guid = recipient.Guid.ToString()}
-            };
-            string headerJson = JsonConvert.SerializeObject( header );
-            message.Headers.Add( "X-SMTPAPI", headerJson );
+                var uniqueArgs = new JObject();
+                foreach (var item in headers)
+                {
+                    uniqueArgs.Add(item.Key, item.Value);
+                }
+                header.Add("unique_args", uniqueArgs);
+            }
+            var filters = new JProperty("filters",
+                new JObject(new JProperty("clicktrack",
+                    new JObject(new JProperty("settings",
+                        new JObject(new JProperty("enable", 1)))))));
+            header.Add(filters);
+            message.Headers.Add("X-SMTPAPI", header.ToString());
         }
-
     }
-
-    // ReSharper disable InconsistentNaming
-    public class UniqueArgs
-    {
-        public string communication_recipient_guid { get; set; }
-    }
-
-    public class Settings
-    {
-        public int enable { get; set; }
-    }
-
-    public class Clicktrack
-    {
-        
-        public Settings settings { get; set; }
-    }
-
-    public class Filters
-    {
-        public Clicktrack clicktrack { get; set; }
-    }
-
-    public class SendGridHeader
-    {
-        public UniqueArgs unique_args { get; set; }
-        public Filters filters { get; set; }
-    }
-    // ReSharper restore InconsistentNaming
 }
