@@ -124,7 +124,7 @@ public class SendGrid : IHttpHandler
                                                 string.Format("Clicked the address {0} from {1} using {2}", clickEvent.Url,
                                                     clickEvent.Ip, clickEvent.UserAgent).Truncate(2200);
                                         }
-                                        CommunicationRecipientActivityService.Add(clickActivity);
+                                        communicationRecipientActivityService.Add(clickActivity);
                                         break;
                                     case WebhookEventType.Dropped:
                                         var dropEvent = item as DroppedEvent;
