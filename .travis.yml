@@ -1,9 +1,10 @@
 language: ruby
 rvm:
-- 2.2
+  - 2.2
 before_install:
+  - mkdir ./script
+  - curl -L -o ./script/ciinstall.sh https://raw.githubusercontent.com/BricksandMortar/Vibranium/gh-pages/script/ciinstall.sh
   - chmod +x ./script/ciinstall.sh
-#  - npm install
 install: ./script/ciinstall.sh
 before_script:
   - chmod +x ./script/cibuild.sh
@@ -19,5 +20,5 @@ env:
     - NAME="SendGrid Email Transport"
     - REPO="SendGrid"
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-    - secure: xYPxIAHnyPAoForEpP0cJ0qo/5dLUb5FPcLVu3u7PciK9Jej5M/p7t3z0Of2v1uqcTTHFRqaDwyhaVrJfyDogyJqs23lNB3LovhPaV4rbso/LNl3VivtI/q/0DMh23VW6+bCwHxFk/ajfaXuLb8zpKuo6Sawnt4sFyre/lrm3EruT9hDQLiVTDGFJsq4gOlfAEqKmBuDzoPT69UVMmdMtplFEH8VsCUTX5z2qGqNWN1gTqT8KF/l+7ng8zewxxEYWCAhbDUqxBYbvgFm69IYIeg7tKhvbbscV/Ww58gzFJjqqsQS5XHvumu3tj6rKZxob7b3RdBXZ1GmLnMOa2yDupSkuYIy6QJ3wZ3MeaEo81MMJnuR7OXQ5ITEfoovjSur2sKaY/GJU3U8FYn//P6vSCDAPhAm1lXSeHuh3t73C6RgvolemN6RMSdenRqj6ex/aha8GEHIgnJ4PgkRrowAv8eRMxF7UCQ/wyo+AO9hQydMDx2jTJN+FOkaB8kEQkKO8CHtXzYwDnm4IswkshZySramNEMdWLMZByO7zeK5bh0CK60VmdNMk+yUl2GOS+8HKJcb0/klBWZYEYy3gWRR4/SFSwTkpzpCHfX6pDlyon15QhQi8nKBW+jWmQr97p4g+qG5AI+NT4t5kC73B6/OdqAmEfKIgKa/cLHKUJUrnbc=
+    - secure: ZJisR53RFRXA+GDALpSdx3po4MMnxXqRsDLjOFuKCtycvLG77Dd/P16IEj9dY+ZfCVugUdxoyTOO66Vrv55GGRjiejwwp6vAznz8Z6oK0RIdw1qpMQxP36BX0JRzw7BwwC6fkiQc5bu5uaNsZfZxApYKzlFfNxxWqLUB2GiNRsp+1x4C1UUmXKVM1ONeUvJAlIKSNU5/Dxk9RE/ck+Y3yfZfXK1j99f5kXGyBY7pgB/yLRtcag2Pg2HLRdfNKJ/QrY17pYyCYGTt5va3H8zDrcLZWVmHHnX/0wlfZXzyWxMUmm8v+VVAPMtyGKG/TwyJ4tgHwxI5QMbL1s1CV20QPyIV6WVfc48xiefuguy3lJSAa4rCsxjiQLKpF3GrUeqdjio5/4+bb8mMot4Wlg6DoRtQjEPdsJDzJvsyu0XiG2A8rbjUUXvjXK5lKs4HxDg1gN2NeHh77IE6d7xQLmV+wzvkvkcQNCUEnq7gjja6vpBXDlEp49VqzWrt36WsIAiMahH8vuSr4TW4nJZk8PjEKLa8za16gmHHYVHxNDKNNFqMaMgzaFBQIE+TjuOMoe2bq5DFSv7hIahjzGTmababrbPZXAd1KSgQduLypGoFzqRWAWLVqCVLGeIej2/XracDctAY7vW1YwcM0K5gT5vkn1RpXYUCTjdwrWc4NBrfHQY=
 sudo: true
