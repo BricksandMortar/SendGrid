@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SendGrid Email Transport</title>
+<!-- Begin Jekyll SEO tag v2.2.3 --><title>Documentation | SendGrid Email Transport</title>
+<meta property="og:title" content="Documentation">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Get setup and running with SendGrid">
+<meta property="og:description" content="Get setup and running with SendGrid">
+<meta property="og:site_name" content="SendGrid Email Transport">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@">
+<script type="application/ld+json">
+{"@context":"http://schema.org","@type":"WebPage","headline":"Documentation","description":"Get setup and running with SendGrid","url":"/SendGrid/documentation/"}</script><!-- End Jekyll SEO tag --><!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]--><link rel="apple-touch-icon-precomposed" sizes="57x57" href="/SendGrid/apple-touch-icon-57x57.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/SendGrid/apple-touch-icon-114x114.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/SendGrid/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/SendGrid/apple-touch-icon-144x144.png">
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="/SendGrid/apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/SendGrid/apple-touch-icon-152x152.png">
+<link rel="icon" type="image/png" href="/SendGrid/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/SendGrid/favicon-16x16.png" sizes="16x16">
+<link rel="stylesheet" href="/SendGrid/assets/css/font-awesome.min.css?v16">
+<link href="/SendGrid/assets/css/docs.min.css?v16" rel="stylesheet">
+<link href="/SendGrid/assets/css/style.css?v16" rel="stylesheet">
+<link href="/SendGrid/assets/css/featherlight.min.css?v16" rel="stylesheet">
+<style>
+    #content {
+      background:#E64C29;
+      background-image: linear-gradient(to bottom,#E64C29,#E64C29 100%);
+      background-image: -o-linear-gradient(top,#E64C29 0,#E64C29 100%);
+      background-image: -webkit-linear-gradient(top,#E64C29 0,#E64C29 100%);
+    }
+  </style>
+<script src="/SendGrid/assets/js/jquery-1.12.2.min.js"></script><script src="/SendGrid/assets/js/bootstrap.min.js"></script><script src="/SendGrid/assets/js/docs.min.js"></script><script src="/SendGrid/assets/js/featherlight.min.js"></script>
+</head>
+<body>
+  <!-- Main navigation
+  =========================================== -->
+  <header class="navbar navbar-static-top bs-docs-nav" id="top"><div class="container">
+      <div class="navbar-header" role="banner">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/SendGrid/index.html">SendGrid Email Transport</a>
+      </div>
+      <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation"><ul class="nav navbar-nav">
+<li>
+          <a id="github-repo" href="https://github.com/BricksandMortar/SendGrid">Github</a>
+        </li>
+        </ul></nav>
+</div>
+  </header><!-- Header
+  =========================================== --><div class="bs-docs-masthead" id="content">
+    <div class="container">
+      <h1 class="home-title">SendGrid Email Transport</h1>
+      <p class="lead">Get setup and running with SendGrid</p>
+      <p class="lead">
+        <a id="github-download" href="" class="btn btn-outline-inverse btn-lg">Download</a>
+      </p>
+      <a class="version"></a>
+    </div>
+  </div>
+
+<div class="container bs-docs-container">
+    <div class="row">
+      <div class="col-md-12">
+          <h1 id="intro" class="page-header">A Bricks and Mortar Studio Project</h1>
+          <p>Bricks and Mortar Studio releases all of our Rock RMS plugins as open-source. If you or your church can afford to, please consider purchasing this plugin on the <a href="">Rock Store</a>. Click here to read more about the benefits of purchasing for you, us, and the wider Rock community.
+      </p>
+</div>
+    </div>
+  </div>
+  
+
+  <div class="container bs-docs-container">
+    <div class="row">
+      <!-- Content
+      =========================================== -->
+      <div class="col-md-9" role="main">
+        <!-- wrap each main section with "bs-docs-section" class -->
+<section class="bs-docs-section"><!-- each section must contain ONE h1 with an id and optionally a "page-header" class --><h1 id="setup" class="page-header">Setup</h1>
+
+  <h2 id="sendgrid-setup">SendGrid Account Setup
+  </h2>
+<p>To use this plugin you will need a <a href="https://sendgrid.com/">SendGrid account</a>. SendGrid provide a <a href="https://sendgrid.com/pricing">variety</a> of plans for different volumes of sending. The Lite plan is not supported by this plugin but all other plans are, including the free plan which provides 12,000 free emails per month.</p>
+  <p>After creating an account you'll have to wait for your <a href="https://support.sendgrid.com/hc/en-us/articles/200181628">account provisioning</a> to complete before you are able to send email.
+    </p>
+<h2 id="sendgrid-configuration">SendGrid Configuration
+      <h4>Credentials</h4>
+    </h2>
+<p>To send emails from Rock you'll want to configure a separate credential from the one you use to login to the SendGrid dashboard. To do this, from the SendGrid dashboard, go to <span data-type="action">Settings &gt; API Keys</span> and then create a new API Key. Give it a sensible name (like: Rock Email Send), and tick <code>Restricted Access</code>.
+    <a href="/SendGrid/assets/images/documentation/send-grid-new-api.png" data-featherlight><img src="/SendGrid/assets/images/documentation/send-grid-new-api.png" class="img-responsive" id="feather-new-api" alt="SendGrid New API Key"></a>
+    </p>
+    <p>
+      Ensure that the API key has full access to Mail Send and then press <span data-type="action">Create and View</span> at the bottom of the page and note down the API key displayed to you. You'll need to enter this into Rock later.
+    <a href="/SendGrid/assets/images/documentation/sendgrid-api-key-mail-send-access.png" data-featherlight><img src="/SendGrid/assets/images/documentation/sendgrid-api-key-mail-send-access.png" class="img-responsive" id="feather-api-key-access" alt="SendGrid API Key Access"></a>
+    </p>
+      <h4>Analytics</h4>
+    <p>SendGrid Email Transport supports email analytics, configuring this is a two step process. First visit <span data-type="action">Settings &gt; Mail Settings</span> on the SendGrid dashboard and switch <span data-type="action">Event Notification</span> on. In the HTTP Post URL box type in your Rock URL followed by <em>/webhooks/SendGrid.ashx</em>. For instance if my Rock site was hosted at http://rock.bricksandmortarstudio.com I'd type in <em>http://rock.bricksandmortarstudio.com/webhooks/SendGrid.ashx</em>. Ensure you select the following actions:
+      </p>
+<ul>
+<li>Opened</li>
+        <li>Clicked</li>
+        <li>Dropped</li>
+        <li>Deferred</li>
+        <li>Bounced</li>
+      </ul>
+<a href="/SendGrid/assets/images/documentation/sendgrid-webhook.png" data-featherlight><img src="/SendGrid/assets/images/documentation/sendgrid-webhook.png" class="img-responsive" id="feather-webhook" alt="SendGrid Webhook Setup"></a>
+    
+    <p>If you want to track opens and clicks within your emails you will also need to enable tracking. From the SendGrid dashboard visit <span data-type="action">Settings &gt; Tracking</span> and switch <span data-type="action">Click Tracking</span> and <span data-type="action">Open Tracking</span> on.
+      <a href="/SendGrid/assets/images/documentation/sendgrid-tracking.png" data-featherlight><img src="/SendGrid/assets/images/documentation/sendgrid-tracking.png" class="img-responsive" id="feather-tracking" alt="SendGrid Tracking Setup"></a>
+    </p>
+    <h4>Whitelabels</h4>
+    <p>To ensure the best possible delivery you'll need to configure whitelabels (<span data-type="action">Settings &gt; Whitelabels</span>) for the domain(s) you wish to send mail from. This will involve changing DNS records on those domains and so consequently you may need to help of your network administrator. SendGrid make the process very easy and have <a href="https://support.sendgrid.com/hc/en-us/articles/215904137-Whitelabel-Video-Tutorials">a great video</a> to help you get setup.</p>
+    <h2 id="rock-sub-section">Rock Configuration</h2>
+    <p>Configuring Rock to use SendGrid to deliver your emails is painless. Visit <span data-type="action">Admin Tools &gt; Communications &gt; Communication Transports &gt; SendGrid SMTP</span>. Here you'll find the options for configuring SendGrid. Most of the default options here won't need changing (in fact altering the server from smtp.sendgrid.net is a bad idea!) but you will need to put in values for the username and password. Username is <code>apikey</code> and the password should be the API Key you created on the SendGrid dashboard earlier. After entereing those set the transport to <code>Active</code> and press Save.</p>
+        <a href="/SendGrid/assets/images/documentation/rock-transport-settings.png" data-featherlight><img src="/SendGrid/assets/images/documentation/rock-transport-settings.png" class="img-responsive" id="feather-transport" alt="Rock SendGrid Transport Setup"></a>
+        <p>Then you'll need to go to <span data-type="action">Admin Tools &gt; Communications &gt; Communication Mediums &gt; Email</span> and switch the Communication Transport to SendGrid SMTP.</p>
+        <a href="/SendGrid/assets/images/documentation/rock-medium.png" data-featherlight><img src="/SendGrid/assets/images/documentation/rock-medium.png" class="img-responsive" id="feather-medium" alt="Rock Email Medium Setup"></a>
+  </section><section class="bs-docs-section"><h1 id="developers" class="page-header">Developers</h1>
+  <p>The source code for the SendGrid Email Transport is available <a href="https://github.com/BricksandMortar/SendGrid/releases/latest">here</a> for use with the <a href="http://www.rockrms.com/Rock/Developer">Rockit SDK</a></p>.
+  </section>
+</div>
+
+      <!-- Page navigation
+      =========================================== -->
+      <div class="col-md-3" role="complementary">
+        <div class="bs-docs-sidebar hidden-print">
+          <ul class="nav bs-docs-sidenav"></ul>
+<a class="back-to-top" href="#top">
+            <i class="glyphicon glyphicon-chevron-up"></i> Back to top
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer
+  =========================================== -->
+  <footer class="bs-docs-footer" role="contentinfo"><div class="container">
+      <ul class="bs-docs-footer-links muted">
+<li><a href="https://github.com/BricksandMortar/SendGrid"><i class="fa fa-github"></i>GitHub</a></li>
+      
+        <li><a href="https://github.com/BricksandMortar/SendGrid/issues?state=open">Issues</a></li>
+      
+      </ul>
+<p>Made with <span style="color:#E96040;">♥</span> by <a href="http://bricksandmortarstudio.com">Bricks and Mortar Studio</a></p>
+      <p>
+        SendGrid Email Transport <span id="short-version"> </span> licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache 2.0</a>,
+        documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+      </p>
+    </div>
+  </footer><!-- Async scripts
+  =========================================== --><script>
+  $(document).on('ready', function() {
+  var api = 'https://api.github.com/repos/' + 'BricksandMortar' +'/' + 'SendGrid' + '/releases/latest';
+  $.getJSON( api)
+  .done(function( data ) {
+    $(data).each(function() {
+$('.version').append(this.name).attr('href', this.html_url);
+$('#github-download').attr('href', this.zipball_url);
+    });
+  })
+  .fail(function() {
+    console.log( "Error getting Github URL" );
+  });
+});
+</script>
+</body>
+</html>
