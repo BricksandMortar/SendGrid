@@ -14,8 +14,12 @@ download: true
   <p>After creating an account you'll have to wait for your <a href="https://support.sendgrid.com/hc/en-us/articles/200181628">account provisioning</a> to complete before you are able to send email.
     <h2 id="sendgrid-configuration">SendGrid Configuration</h3>
       <h4>Credentials</h4>
-    <p>To send emails from Rock you'll need to configure a separate credential from the one you use to login to the SendGrid dashboard. To do this, from the SendGrid dashboard, go to <span data-type="action">Settings > Credentials</span> and then add a new credential. Ensure that only the Mail checkbox is checked, give the credential an appropiate username (for example, rock_send), and a strong password. Remember these for later.
-       <a href="{{site.github.url}}/assets/images/documentation/sendgrid-newcredential.png" data-featherlight><img src="{{site.github.url}}/assets/images/documentation/sendgrid-newcredential.png" class="img-responsive" id="feather-newcredential" alt="SendGrid New Credentials" /></a>
+    <p>To send emails from Rock you'll want to configure a separate credential from the one you use to login to the SendGrid dashboard. To do this, from the SendGrid dashboard, go to <span data-type="action">Settings > API Keys</span> and then create a new API Key. Give it a sensible name (like: Rock Email Send), and tick <code>Restricted Access</code>.
+    <a href="{{site.github.url}}/assets/images/documentation/send-grid-new-api.png" data-featherlight><img src="{{site.github.url}}/assets/images/documentation/send-grid-new-api.png" class="img-responsive" id="feather-new-api" alt="SendGrid New API Key" /></a>
+    </p>
+    <p>
+      Ensure that the API key has full access to Mail Send and then press <span data-type="action">Create and View</span> at the bottom of the page and note down the API key displayed to you. You'll need to enter this into Rock later.
+    <a href="{{site.github.url}}/assets/images/documentation/sendgrid-api-key-mail-send-access.png" data-featherlight><img src="{{site.github.url}}/assets/images/documentation/sendgrid-api-key-mail-send-access.png" class="img-responsive" id="feather-api-key-access" alt="SendGrid API Key Access" /></a>
     </p>
       <h4>Analytics</h4>
     <p>{{site.name}} supports email analytics, configuring this is a two step process. First visit <span data-type="action">Settings > Mail Settings</span> on the SendGrid dashboard and switch <span data-type="action">Event Notification</span> on. In the HTTP Post URL box type in your Rock URL followed by <em>/webhooks/SendGrid.ashx</em>. For instance if my Rock site was hosted at http://rock.bricksandmortarstudio.com I'd type in <em>http://rock.bricksandmortarstudio.com/webhooks/SendGrid.ashx</em>. Ensure you select the following actions:
