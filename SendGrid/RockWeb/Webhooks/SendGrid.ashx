@@ -98,7 +98,7 @@ public class SendGrid : IHttpHandler
                                     interactionComponent = interactionComponentService
                                         .Queryable()
                                         .FirstOrDefault( c => c.ChannelId == interactionChannel.Id &&
-                                                              c.EntityId == communicationRecipient.CommunicationId );
+                                                              c.EntityId == communicationRecipient.Communication.Id );
                                     if ( interactionComponent == null )
                                     {
                                         interactionComponent = new InteractionComponent();
@@ -130,9 +130,7 @@ public class SendGrid : IHttpHandler
                                             if ( interactionComponent != null )
                                             {
 
-                                                var openInteraction = CreateInteraction( communicationRecipient, "Opened", item, interactionService );
-
-                                                interactionService.Add( openInteraction );
+                                                CreateInteraction( communicationRecipient, "Opened", item, interactionService, interactionComponent );
                                             }
                                         }
                                         break;
@@ -141,8 +139,7 @@ public class SendGrid : IHttpHandler
                                         var clickEvent = item as ClickEvent;
                                         if ( clickEvent != null && interactionComponent != null )
                                         {
-                                            var clickInteraction = CreateInteraction( communicationRecipient, "Click", item, interactionService );
-                                            interactionService.Add( clickInteraction );
+                                            CreateInteraction( communicationRecipient, "Click", item, interactionService, interactionComponent );
                                         }
                                         break;
                                     case WebhookEventType.Dropped:
@@ -217,24 +214,26 @@ public class SendGrid : IHttpHandler
         _response.StatusCode = 200;
     }
 
-    private static Interaction CreateInteraction( CommunicationRecipient communicationRecipient, string operation, WebhookEventBase item, InteractionService interactionService )
+    private static Interaction CreateInteraction( CommunicationRecipient communicationRecipient, string operation, WebhookEventBase item, InteractionService interactionService, InteractionComponent interactionComponent )
     {
         var interaction = new Interaction()
         {
             EntityId = communicationRecipient.Id,
             Operation = operation,
             InteractionDateTime = item.Timestamp,
-            PersonAliasId = communicationRecipient.PersonAliasId
+            PersonAliasId = communicationRecipient.PersonAliasId,
+            InteractionComponentId = interactionComponent.Id
         };
         var itemEvent = item as EngagementEventBase;
         if ( itemEvent == null )
         {
             throw new Exception( "Webhook event is not an engagement event." );
         }
-        var interactionDeviceType = interactionService.GetInteractionDeviceType( itemEvent.UserAgent, null, null, null );
+        var interactionDeviceType = interactionService.GetInteractionDeviceType( itemEvent.UserAgent.Truncate(100), null, null, null );
         var interactionSession = interactionService.GetInteractionSession( null, itemEvent.Ip, interactionDeviceType.Id );
 
         interaction.InteractionSessionId = interactionSession.Id;
+        interactionService.Add( interaction );
         return interaction;
     }
 
