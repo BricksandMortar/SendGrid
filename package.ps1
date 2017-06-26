@@ -32,3 +32,6 @@
 	# Zip things up
 	$command = '7za a -tzip -r ' + $name + ' .\staging\*'
 	Invoke-Expression -Command:$command
+	
+	# Remove staging folder
+	Remove-Item $path -Force -Recurse
